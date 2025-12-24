@@ -31,4 +31,12 @@ const runtime = new Runtime();
 const main = runtime.module(define);
 main.value("foo").then(value => console.log(value));
 ~~~
+
+## GitHub Pages
+
+The repository is configured to publish the static site to GitHub Pages from the `main` branch. After pushing changes:
+
+1. Verify that the GitHub Actions workflow **Deploy static content to GitHub Pages** succeeds.
+2. The live site will be available at the repository’s Pages URL, typically `https://<user>.github.io/<repo>/`.
+3. If you need to trigger a manual deploy, you can run the workflow from the Actions tab using the **Run workflow** button.
 # BugetBubbleChart
