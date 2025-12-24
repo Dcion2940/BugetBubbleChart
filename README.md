@@ -32,3 +32,15 @@ const main = runtime.module(define);
 main.value("foo").then(value => console.log(value));
 ~~~
 # BugetBubbleChart
+
+## GitHub Pages deployment
+
+This repository ships with a GitHub Actions workflow that publishes the static
+site to GitHub Pages on pushes to the `main` or `work` branches. To enable it:
+
+1. Push the workflow to GitHub.
+2. In the repository settings, open **Pages** and select **GitHub Actions** as
+   the source if it is not already configured.
+3. The workflow packages the static assets from this repository and deploys
+   them to the `github-pages` environment. You can also trigger a manual run
+   from the **Actions** tab via **Deploy site to GitHub Pages**.
