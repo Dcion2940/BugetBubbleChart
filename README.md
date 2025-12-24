@@ -31,4 +31,13 @@ const runtime = new Runtime();
 const main = runtime.module(define);
 main.value("foo").then(value => console.log(value));
 ~~~
+
+## Deployment
+
+Pushes to the `main` branch automatically deploy the static site to GitHub Pages
+using the workflow in `.github/workflows/deploy.yml`. The generated site uses
+the files in the repository root (excluding `node_modules` and GitHub metadata),
+so no build step is required; everything referenced by `index.html` is published
+directly. Once the workflow finishes, the published site will be available at
+`https://<your-username>.github.io/BugetBubbleChart`.
 # BugetBubbleChart
