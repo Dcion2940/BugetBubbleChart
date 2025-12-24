@@ -32,3 +32,14 @@ const main = runtime.module(define);
 main.value("foo").then(value => console.log(value));
 ~~~
 # BugetBubbleChart
+
+## Deploying to GitHub Pages
+
+This repository includes a GitHub Actions workflow that publishes the static site to GitHub Pages.
+
+1. In GitHub, go to **Settings → Pages** and ensure **Build and deployment** is set to **GitHub Actions**.
+2. Push changes to `main` (or `master`). The workflow at `.github/workflows/deploy.yml` will:
+   - Check out the repository.
+   - Package the static site content (excluding `node_modules`, `.git*`, and workflow files).
+   - Upload the artifact and deploy it to GitHub Pages.
+3. After the workflow finishes, the published site URL will appear in the workflow summary and under **Settings → Pages**.
