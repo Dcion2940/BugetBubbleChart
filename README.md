@@ -1,9 +1,8 @@
-# Bubble chart
+# Taiwan budget bubble chart
 
-https://observablehq.com/@d3/bubble-chart/2@265
+This project renders a bubble chart of the 2019 Taiwan central government budget by spending category. It is based on the Observable [bubble chart](https://observablehq.com/@d3/bubble-chart/2@265) notebook and uses D3 to calculate the packed layout.
 
-View this notebook in your browser by running a web server in this folder. For
-example:
+View the chart in your browser by running a web server in this folder. For example:
 
 ~~~sh
 npx http-server
@@ -24,14 +23,9 @@ import {Runtime, Inspector} from "@observablehq/runtime";
 import define from "@d3/bubble-chart/2";
 ~~~
 
-To log the value of the cell named “foo”:
+## Data
 
-~~~js
-const runtime = new Runtime();
-const main = runtime.module(define);
-main.value("foo").then(value => console.log(value));
-~~~
-# BugetBubbleChart
+The data file [`files/tw2019ap.csv`](files/tw2019ap.csv) contains 2019 appropriations with columns for spending category (`cat`) and amount. The chart aggregates totals by category and uses the sum to size each bubble.
 
 ## GitHub Pages deployment
 
