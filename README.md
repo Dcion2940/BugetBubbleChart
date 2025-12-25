@@ -32,3 +32,11 @@ const main = runtime.module(define);
 main.value("foo").then(value => console.log(value));
 ~~~
 # BugetBubbleChart
+
+## GitHub Pages deployment
+
+This repository includes a GitHub Actions workflow that publishes the site to GitHub Pages:
+
+- The workflow runs on pushes to the `main` branch or when manually dispatched.
+- It uploads the repository contents as a Pages artifact and deploys them using `actions/deploy-pages`.
+- Ensure GitHub Pages is enabled for the repository and that Actions are permitted to deploy to the Pages environment.
