@@ -3,9 +3,9 @@ import define1 from "./a33468b95d0b15b0@817.js";
 function _1(md){return(
 md`<div style="color: grey; font: 13px/25.5px var(--sans-serif); text-transform: uppercase;"><h1 style="display: none;">Bubble chart</h1><a href="https://d3js.org/">D3</a> › <a href="/@d3/gallery">Gallery</a></div>
 
-# Bubble chart
+# Taiwan 2019 central government budget
 
-Bubble charts are non-hierarchical [packed circles](/@d3/pack/2). The area of each circle is proportional its value (here, file size). The organic appearance of these diagrams can be intriguing, but also consider a [treemap](/@d3/treemap/2) or a humble [bar chart](/@d3/horizontal-bar-chart/2).`
+This bubble chart summarizes the 2019 Taiwan central government budget by spending category. Bubble size is proportional to the category’s total allocation, and colors distinguish categories.`
 )}
 
 function _key(Swatches,chart){return(
@@ -18,15 +18,16 @@ function _chart(d3,data)
   const width = 928;
   const height = width;
   const margin = 1; // to avoid clipping the root circle stroke
-  const name = d => d.id.split(".").pop(); // "Strings" of "flare.util.Strings"
-  const group = d => d.id.split(".")[1]; // "util" of "flare.util.Strings"
-  const names = d => name(d).split(/(?=[A-Z][a-z])|\s+/g); // ["Legend", "Item"] of "flare.vis.legend.LegendItems"
+  const name = d => d.name ?? d.id.split(".").pop();
+  const group = d => d.category ?? d.group ?? d.id.split(".")[1] ?? d.id;
+  const names = d => String(name(d)).split(/(?=[A-Z][a-z])|\s+/g);
 
   // Specify the number format for values.
   const format = d3.format(",d");
 
   // Create a categorical color scale.
-  const color = d3.scaleOrdinal(d3.schemeTableau10);
+  const color = d3.scaleOrdinal(d3.schemeTableau10)
+    .domain(Array.from(new Set(data.map(group))));
 
   // Create the pack layout.
   const pack = d3.pack()
@@ -55,7 +56,7 @@ function _chart(d3,data)
 
   // Add a title.
   node.append("title")
-      .text(d => `${d.data.id}\n${format(d.value)}`);
+      .text(d => `${name(d.data)}\n${format(d.value)}`);
 
   // Add a filled circle.
   node.append("circle")
@@ -86,21 +87,30 @@ function _chart(d3,data)
 }
 
 
-async function _data(FileAttachment){return(
-(await FileAttachment("flare.csv").csv({typed: true})).filter(({value}) => value !== null)
+async function _data(FileAttachment,d3){return(
+d3.rollups(
+  await FileAttachment("budget.csv").csv({typed: true}),
+  entries => d3.sum(entries, d => d.amount),
+  d => d.cat
+).map(([category, value]) => ({
+  id: `budget.${category}`,
+  name: category,
+  category,
+  value
+})).sort((a, b) => d3.descending(a.value, b.value))
 )}
 
 export default function define(runtime, observer) {
   const main = runtime.module();
   function toString() { return this.url; }
   const fileAttachments = new Map([
-    ["flare.csv", {url: new URL("./files/aee5d40e70ea9830c96efe6da03ad32187ff7223ad1b7b84e38c32127ccf6661b576fe0005b42657703e7bfaaefabc74550268cc35f64122a652fc471110c832.csv", import.meta.url), mimeType: "text/csv", toString}]
+    ["budget.csv", {url: new URL("./files/tw2019ap.csv", import.meta.url), mimeType: "text/csv", toString}]
   ]);
   main.builtin("FileAttachment", runtime.fileAttachments(name => fileAttachments.get(name)));
   main.variable(observer()).define(["md"], _1);
   main.variable(observer("key")).define("key", ["Swatches","chart"], _key);
   main.variable(observer("chart")).define("chart", ["d3","data"], _chart);
-  main.variable(observer("data")).define("data", ["FileAttachment"], _data);
+  main.variable(observer("data")).define("data", ["FileAttachment","d3"], _data);
   const child1 = runtime.module(define1);
   main.import("Swatches", child1);
   return main;
